@@ -1,0 +1,12 @@
+services:
+  psql:
+    image: postgres
+    container_name: 'postgra'
+    volumes:
+      - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=tasks
