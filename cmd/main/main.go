@@ -6,6 +6,12 @@ import (
 	"task-microservices/internal/app"
 )
 
+// @tittle Task microservice
+// @version 1.0
+// @description API Server for Task microservice
+
+// @host localhost:9000
+// @BasePath /
 func main() {
 	cfg, err := config.NewConfig()
 	if err != nil {

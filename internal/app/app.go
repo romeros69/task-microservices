@@ -8,21 +8,25 @@ import (
 	"os/signal"
 	"syscall"
 	"task-microservices/config"
+	v1 "task-microservices/internal/controller/http/v1"
+	"task-microservices/internal/usecase"
+	"task-microservices/internal/usecase/repo"
 	"task-microservices/pkg/httpserver"
 	"task-microservices/pkg/postgres"
 	"time"
 )
 
 func Run(cfg *config.Config) {
-	_, err := postgres.New(cfg)
+	pg, err := postgres.New(cfg)
 
 	if err != nil {
 		log.Fatal("Error in creating postgres instance")
 	}
 
-	//bookUseCase := usecase.NewBookUseCase(repo.NewBookRepo(pg))
-	//
-	//// http server
+	taskStatusUC := usecase.NewTaskStatusUseCase(repo.NewTaskStatusRepo(pg))
+	taskUC := usecase.NewTaskUseCase(repo.NewTaskRepo(pg), taskStatusUC)
+
+	// http server
 	handler := gin.New()
 	//
 	handler.Use(cors.New(cors.Config{
@@ -33,8 +37,8 @@ func Run(cfg *config.Config) {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-	//
-	//v1.NewRouter(handler, bookUseCase)
+
+	v1.NewRouter(handler, taskUC)
 
 	serv := httpserver.New(handler, httpserver.Port(cfg.HTTP.Port))
 	interruption := make(chan os.Signal, 1)

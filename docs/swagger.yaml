@@ -1,0 +1,143 @@
+basePath: /
+definitions:
+  entity.Task:
+    properties:
+      author:
+        type: string
+      creation_date:
+        type: string
+      id:
+        type: integer
+      status_id:
+        type: integer
+    type: object
+  v1.errResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  v1.taskRequestDTO:
+    properties:
+      author:
+        type: string
+      creationDate:
+        type: string
+      statusID:
+        type: integer
+    type: object
+host: localhost:9000
+info:
+  contact: {}
+  description: API Server for Task microservice
+  version: "1.0"
+paths:
+  /api/v1/task:
+    get:
+      consumes:
+      - application/json
+      description: Get all tasks
+      operationId: get-all-tasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Task'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+      summary: GetAllTasks
+      tags:
+      - task
+    post:
+      consumes:
+      - application/json
+      description: Create new task
+      operationId: create-task
+      parameters:
+      - description: Enter author and status id of new task
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/v1.taskRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+      summary: CreateTask
+      tags:
+      - task
+  /api/v1/task/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete task by id
+      operationId: delete-task
+      parameters:
+      - description: Enter id task
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+      summary: DeleteTask
+      tags:
+      - task
+    get:
+      consumes:
+      - application/json
+      description: Get task by id
+      operationId: get-task-by-id
+      parameters:
+      - description: Enter id task
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Task'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/v1.errResponse'
+      summary: GetTaskById
+      tags:
+      - task
+swagger: "2.0"

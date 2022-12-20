@@ -21,4 +21,12 @@ type (
 		CreateTask(context.Context, entity.Task) (int64, error)
 		ApproveTask(context.Context) error // TODO - по какому признаку?
 	}
+
+	TaskStatusContract interface {
+		CheckExistByID(context.Context, int64) bool
+	}
+
+	TaskStatusRp interface {
+		CheckExistByID(context.Context, int64) (entity.TaskStatus, error)
+	}
 )
