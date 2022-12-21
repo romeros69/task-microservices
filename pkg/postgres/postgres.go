@@ -14,11 +14,12 @@ import (
 	"github.com/Masterminds/squirrel"
 )
 
+// TODO - before deploy do new path to root.crt
 const (
 	_defaultMaxPoolSize  = 1
 	_defaultConnAttempts = 10
 	_defaultConnTimeout  = time.Second
-	_ca                  = "/Users/romeros/.postgresql/root.crt"
+	_ca                  = "/home/romich-v2/.postgresql/root.crt"
 )
 
 type Postgres struct {
@@ -27,8 +28,7 @@ type Postgres struct {
 	connTimeout  time.Duration
 
 	Builder squirrel.StatementBuilderType
-	//Pool    *pgxpool.Pool
-	Conn *pgx.Conn
+	Conn    *pgx.Conn
 }
 
 func New(cfg *config.Config) (*Postgres, error) {

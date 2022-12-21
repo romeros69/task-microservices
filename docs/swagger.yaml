@@ -20,12 +20,10 @@ definitions:
     properties:
       author:
         type: string
-      creationDate:
-        type: string
       statusID:
         type: integer
     type: object
-host: localhost:9000
+host: 51.250.31.190:9000
 info:
   contact: {}
   description: API Server for Task microservice
@@ -59,6 +57,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/v1.errResponse'
+      security:
+      - ApiKeyAuth: []
       summary: CreateTask
       tags:
       - task
@@ -87,6 +87,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/v1.errResponse'
+      security:
+      - ApiKeyAuth: []
       summary: DeleteTask
       tags:
       - task
@@ -116,6 +118,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/v1.errResponse'
+      security:
+      - ApiKeyAuth: []
       summary: GetTaskById
       tags:
       - task
@@ -138,7 +142,14 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/v1.errResponse'
+      security:
+      - ApiKeyAuth: []
       summary: GetAllTasks
       tags:
       - task
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

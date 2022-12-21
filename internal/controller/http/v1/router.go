@@ -5,13 +5,15 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "task-microservices/docs"
+	"task-microservices/internal/controller/grpc"
 	"task-microservices/internal/usecase"
 )
 
-func NewRouter(handler *gin.Engine, tc usecase.TaskContract) {
+func NewRouter(handler *gin.Engine, tc usecase.TaskContract, rpcClient *grpc.RpcClient) {
 	handler.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	auth := NewAuthMiddle(rpcClient)
 	h := handler.Group("/api/v1")
 	{
-		newTaskRoutes(h, tc)
+		newTaskRoutes(h, tc, auth)
 	}
 }

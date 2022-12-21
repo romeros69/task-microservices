@@ -18,6 +18,11 @@ const docTemplate = `{
     "paths": {
         "/api/v1/task": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create new task",
                 "consumes": [
                     "application/json"
@@ -65,6 +70,11 @@ const docTemplate = `{
         },
         "/api/v1/task/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get task by id",
                 "consumes": [
                     "application/json"
@@ -108,6 +118,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete task by id",
                 "consumes": [
                     "application/json"
@@ -150,6 +165,11 @@ const docTemplate = `{
         },
         "/api/v1/tasks": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get all tasks",
                 "consumes": [
                     "application/json"
@@ -214,13 +234,17 @@ const docTemplate = `{
                 "author": {
                     "type": "string"
                 },
-                "creationDate": {
-                    "type": "string"
-                },
                 "statusID": {
                     "type": "integer"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
@@ -228,7 +252,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:9000",
+	Host:             "51.250.31.190:9000",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "",

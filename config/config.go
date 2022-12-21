@@ -18,7 +18,7 @@ type Config struct {
 	PostgresUrl  string
 	SecretKey    string `env:"SECRET_KEY" envDefault:"SOME_SECRET_KEY"`
 	GrpcProtocol string `env:"GRPC_PROT" envDefault:"tcp"`
-	GrpcURL      string `env:"GRPC_URL" envDefault:"auth:9011"`
+	GrpcURL      string `env:"GRPC_URL" envDefault:"51.250.108.95:9011"`
 }
 
 func NewConfig() (*Config, error) {

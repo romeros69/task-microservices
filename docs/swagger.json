@@ -5,11 +5,16 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:9000",
+    "host": "51.250.31.190:9000",
     "basePath": "/",
     "paths": {
         "/api/v1/task": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create new task",
                 "consumes": [
                     "application/json"
@@ -57,6 +62,11 @@
         },
         "/api/v1/task/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get task by id",
                 "consumes": [
                     "application/json"
@@ -100,6 +110,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete task by id",
                 "consumes": [
                     "application/json"
@@ -142,6 +157,11 @@
         },
         "/api/v1/tasks": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get all tasks",
                 "consumes": [
                     "application/json"
@@ -206,13 +226,17 @@
                 "author": {
                     "type": "string"
                 },
-                "creationDate": {
-                    "type": "string"
-                },
                 "statusID": {
                     "type": "integer"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

@@ -3,11 +3,13 @@ package app
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	grpc3 "google.golang.org/grpc"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"task-microservices/config"
+	grpc2 "task-microservices/internal/controller/grpc"
 	v1 "task-microservices/internal/controller/http/v1"
 	"task-microservices/internal/usecase"
 	"task-microservices/internal/usecase/repo"
@@ -22,6 +24,15 @@ func Run(cfg *config.Config) {
 	if err != nil {
 		log.Fatal("Error in creating postgres instance")
 	}
+
+	conn, err := grpc3.Dial(cfg.GrpcURL, grpc3.WithInsecure())
+
+	if err != nil {
+		log.Fatalf("Cannot dial with gRPC connection: %v", err)
+	}
+	defer conn.Close()
+
+	rpcClient := grpc2.NewRpcServer(conn)
 
 	taskStatusUC := usecase.NewTaskStatusUseCase(repo.NewTaskStatusRepo(pg))
 	taskUC := usecase.NewTaskUseCase(repo.NewTaskRepo(pg), taskStatusUC)
@@ -38,7 +49,7 @@ func Run(cfg *config.Config) {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	v1.NewRouter(handler, taskUC)
+	v1.NewRouter(handler, taskUC, rpcClient)
 
 	serv := httpserver.New(handler, httpserver.Port(cfg.AppPort))
 	interruption := make(chan os.Signal, 1)
