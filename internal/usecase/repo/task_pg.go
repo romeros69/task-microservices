@@ -22,7 +22,7 @@ var _ usecase.TaskRp = (*TaskRepo)(nil)
 
 func (t *TaskRepo) GetTasks(ctx context.Context) ([]entity.Task, error) {
 	query := `SELECT * FROM task`
-	rows, err := t.pg.Pool.Query(ctx, query)
+	rows, err := t.pg.Conn.Query(ctx, query)
 	if err != nil {
 		return nil, fmt.Errorf("cannot execute query: %w", err)
 	}
@@ -46,7 +46,7 @@ func (t *TaskRepo) GetTasks(ctx context.Context) ([]entity.Task, error) {
 
 func (t *TaskRepo) GetTaskByID(ctx context.Context, id int64) (entity.Task, error) {
 	query := "SELECT * FROM task WHERE id = $1"
-	rows, err := t.pg.Pool.Query(ctx, query, id)
+	rows, err := t.pg.Conn.Query(ctx, query, id)
 	if err != nil {
 		return entity.Task{}, fmt.Errorf("cannot execute query: %w", err)
 	}
@@ -69,7 +69,7 @@ func (t *TaskRepo) GetTaskByID(ctx context.Context, id int64) (entity.Task, erro
 
 func (t *TaskRepo) DeleteTaskByID(ctx context.Context, id int64) error {
 	query := `DELETE FROM task WHERE id = $1`
-	rows, err := t.pg.Pool.Query(ctx, query, id)
+	rows, err := t.pg.Conn.Query(ctx, query, id)
 	if err != nil {
 		return fmt.Errorf("cannot execute query: %w", err)
 	}
@@ -79,7 +79,7 @@ func (t *TaskRepo) DeleteTaskByID(ctx context.Context, id int64) error {
 
 func (t *TaskRepo) CreateTask(ctx context.Context, task entity.Task) (int64, error) {
 	query := "INSERT INTO task (creation_date, author, status_id) VALUES ($1, $2, $3) RETURNING id"
-	rows, err := t.pg.Pool.Query(ctx, query, time.Now(), task.Author, task.StatusID)
+	rows, err := t.pg.Conn.Query(ctx, query, time.Now(), task.Author, task.StatusID)
 	if err != nil {
 		return -1, fmt.Errorf("cannot execute query: %w", err)
 	}

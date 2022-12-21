@@ -30,7 +30,7 @@ func newTaskRoutes(handler *gin.RouterGroup, t usecase.TaskContract) {
 // @Produce json
 // @Success 200 {object} []entity.Task
 // @Failure 500 {object} errResponse
-// @Router /api/v1/task [get]
+// @Router /api/v1/tasks [get]
 func (t *taskRoutes) getTasks(c *gin.Context) {
 	listTasks, err := t.t.GetTasks(c.Request.Context())
 	if err != nil {

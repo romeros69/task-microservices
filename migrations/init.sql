@@ -31,3 +31,19 @@ create table email (
     email_type_id integer references email_type on delete cascade
 );
 
+-- create or replace function check_task()
+-- returns trigger as $$
+-- begin
+--
+-- end;
+-- $$ language 'plpgsql';
+
+
+
+insert into task_status (id, status) values (1, 'in_progress');
+insert into task_status (id, status) values (2, 'finished_rejected');
+insert into task_status (id, status) values (3, 'finished_approved');
+
+insert into email_type (id, type) values (1, 'agreement');
+insert into email_type (id, type) values (2, 'end_negative');
+insert into email_type (id, type) values (3, 'agreement_update');

@@ -40,7 +40,7 @@ func Run(cfg *config.Config) {
 
 	v1.NewRouter(handler, taskUC)
 
-	serv := httpserver.New(handler, httpserver.Port(cfg.HTTP.Port))
+	serv := httpserver.New(handler, httpserver.Port(cfg.AppPort))
 	interruption := make(chan os.Signal, 1)
 	signal.Notify(interruption, os.Interrupt, syscall.SIGTERM)
 

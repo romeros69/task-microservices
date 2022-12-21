@@ -21,7 +21,7 @@ var _ usecase.TaskStatusRp = (*TaskStatusRepo)(nil)
 
 func (t *TaskStatusRepo) CheckExistByID(ctx context.Context, id int64) (entity.TaskStatus, error) {
 	query := "SELECT * FROM task_status WHERE id = $1"
-	rows, err := t.pg.Pool.Query(ctx, query, id)
+	rows, err := t.pg.Conn.Query(ctx, query, id)
 	if err != nil {
 		return entity.TaskStatus{}, fmt.Errorf("cannot execute query: %w", err)
 	}
